@@ -76,13 +76,12 @@ def moveItems(listIn):
                 validMoveFrom = True
                 return editedList
             elif toMoveFrom in editedList:
-                # Situation where a list item was given
                 validMoveFrom = True
-                pass
             else:
                 try:
                     toMoveFrom = int(toMoveFrom) - 1
                     if toMoveFrom in range(len(editedList)):
+                        toMoveFrom = editedList[toMoveFrom]
                         validMoveFrom = True
                     else:
                         print("Invalid option - please choose again!")
@@ -96,10 +95,8 @@ def moveItems(listIn):
             toMoveTo = input(" --> ")
 
             if toMoveTo in editedList:
-                # Move to given item position
-                # --> Find position of the given element
+                toMoveTo = editedList.index(toMoveTo)
                 validMoveTo = True
-                pass
             else:
                 try:
                     toMoveTo = int(toMoveTo) - 1
@@ -110,18 +107,83 @@ def moveItems(listIn):
                 except ValueError:
                     print("Invalid option - please try again!")
 
-        editedList.insert(toMoveTo, toMoveFrom) # --> toMoveTo: int, toMoveFrom: string
+        editedList.remove(toMoveFrom)
+        editedList.insert(toMoveTo, toMoveFrom)
         saveList(editedList)
+
     return editedList
 
 
 def editItems(listIn):
-    pass
+    editMore = True
+    editedList = listIn
+
+    while editMore:
+        validEdit = False
+        while not validEdit:
+            displayList(editedList)
+            print("Choose an item to edit (or 'done' to exit):")
+            toEdit = input(" --> ")
+
+            if toEdit.lower() in ['done', 'quit', 'exit']:
+                editMore = False
+                validEdit = True
+                return editedList
+            elif toEdit in editedList:
+                toEdit = editedList.index(toEdit)
+                validEdit = True
+            else:
+                try:
+                    toEdit = int(toEdit) - 1
+                    if toEdit in range(len(editedList)):
+                        validEdit = True
+                    else:
+                        print("Invalid option - try again!")
+                except ValueError:
+                    print("Invalid option - try again!")
+
+        print("Enter the new entry:")
+        newEntry = input(" --> ")
+
+        editedList[toEdit] = newEntry
+        saveList(editedList)
 
 
 
 def removeItems(listIn):
-    pass
+    removeMore = True
+    editedList = listIn
+
+    while removeMore:
+        if len(editedList) == 0:
+            displayList(editedList)
+            removeMore = False
+            return editedList
+        else:
+            validRemove = False
+            while not validRemove:
+                displayList(editedList)
+                print("Choose an item to remove (or 'done' to exit):")
+                toRemove = input(" --> ")
+
+                if toRemove.lower() in ['done', 'quit', 'exit']:
+                    removeMore = False
+                    validRemove = True
+                    return editedList
+                elif toRemove in editedList:
+                    editedList.remove(toRemove)
+                    validRemove = True
+                else:
+                    try:
+                        toRemove = int(toRemove) - 1
+                        if toRemove in range(len(editedList)):
+                            editedList.pop(toRemove)
+                            validRemove = True
+                        else:
+                            print("Invalid choice - try again!")
+                    except ValueError:
+                        print("Invalid choice - try again!")
+            saveList(editedList)
 
 
 
