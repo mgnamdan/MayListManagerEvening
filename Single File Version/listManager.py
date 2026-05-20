@@ -27,13 +27,13 @@ def saveList(listIn):
 def displayList(listIn):
     print("")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print("   LIST")
+    print("                     LIST")
     print("")
     if len(listIn) == 0:
-        print("- There are no items in the list! -")
+        print("   - There are no items in the list! -")
     else:
         for idx in range(len(listIn)):
-            print(f"{idx+1}. {listIn[idx]}")
+            print(f"     {idx+1}. {listIn[idx]}")
     print("")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print("")
@@ -75,38 +75,44 @@ def moveItems(listIn):
                 moveMore = False
                 validMoveFrom = True
                 return editedList
-            elif int(toMoveFrom) in range(len(editedList)):
-                # Situation where an index number was given
-                # Get thing at that position
-                validMoveFrom = True
-                pass
             elif toMoveFrom in editedList:
                 # Situation where a list item was given
                 validMoveFrom = True
                 pass
             else:
-                print("Invalid option - please choose again!")
+                try:
+                    toMoveFrom = int(toMoveFrom) - 1
+                    if toMoveFrom in range(len(editedList)):
+                        validMoveFrom = True
+                    else:
+                        print("Invalid option - please choose again!")
+                except ValueError:
+                    print("Invalid option - please choose again!")
+                
         
         validMoveTo = False
         while not validMoveTo:
             print("Choose a position to move the item to:")
             toMoveTo = input(" --> ")
 
-            if int(toMoveTo) in range(len(editedList)):
-                # Move to that position
-                validMoveTo = True
-                pass
-            elif toMoveTo in editedList:
+            if toMoveTo in editedList:
                 # Move to given item position
                 # --> Find position of the given element
                 validMoveTo = True
                 pass
             else:
-                print("Invalid option - please try again!")
+                try:
+                    toMoveTo = int(toMoveTo) - 1
+                    if toMoveTo in range(len(editedList)):
+                        validMoveTo = True
+                    else:
+                        print("Invalid option - please try again!")
+                except ValueError:
+                    print("Invalid option - please try again!")
 
-        editedList.insert(toMoveTo, toMoveFrom)
+        editedList.insert(toMoveTo, toMoveFrom) # --> toMoveTo: int, toMoveFrom: string
         saveList(editedList)
-        return editedList
+    return editedList
 
 
 def editItems(listIn):
